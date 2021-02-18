@@ -1,15 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
-
-
-# In[3]:
 
 
 #Load the dataset
@@ -21,9 +15,6 @@ X_te = np.load("fashion_mnist_test_images.npy")
 #print(X_te.shape)
 yte = np.load("fashion_mnist_test_labels.npy")
 #print(yte.shape)
-
-
-# In[4]:
 
 
 #Splitting the training dataset into mini-batch as training set  and validation set
@@ -41,9 +32,6 @@ X_val /= 255     #normalizing the input
 
 Y_val = ytr[split_y:].reshape(12000,1)
 #print(Y_val.shape)
-
-
-# In[5]:
 
 
 #converting the labels into 1 
@@ -69,9 +57,6 @@ for i in range(0, np.size(yte) - 1):
 #print("fin",y_te[10:20, :])
 
 
-# In[6]:
-
-
 #intialize w and b as random
 examp = X_tr_mini_batch.shape[0]
 pixel = X_tr_mini_batch.shape[1]
@@ -79,9 +64,6 @@ from numpy import random
 w = random.rand(pixel,10)
 b = random.rand(examp,10)
 #print(w.shape,b.shape)
-
-
-# In[7]:
 
 
 def stochastic_gradient_descent(X_tr_mini_batch, y_tr,w, b, l_reg = 0.7,batch_size = 50, learning_rate = 0.8, epoch = 100):
@@ -113,9 +95,6 @@ def stochastic_gradient_descent(X_tr_mini_batch, y_tr,w, b, l_reg = 0.7,batch_si
     return param
 
 
-# In[8]:
-
-
 def Cross_entropy_loss (param,X_val, y_val, alpha = 0.7):
     w = m["w"]
     b = m["b"]
@@ -133,15 +112,9 @@ def Cross_entropy_loss (param,X_val, y_val, alpha = 0.7):
     return val
 
 
-# In[ ]:
-
-
 m1 = stochastic_gradient_descent(X_tr_mini_batch, y_tr,w, b, l_reg = 0.7,batch_size = 50, learning_rate = 0.8, epoch = 100)
 case1 = Cross_entropy_loss(m1,X_val, y_val, alpha = 0.7)
 print(case1)
-
-
-# In[ ]:
 
 
 m2 = stochastic_gradient_descent(X_tr_mini_batch, y_tr,w, b, l_reg = 0.02,batch_size = 100, learning_rate = 0.7, epoch = 200)
@@ -149,15 +122,9 @@ case2 = Cross_entropy_loss(m2,X_val, y_val, alpha = 0.5)
 print(case2)
 
 
-# In[ ]:
-
-
 m3 = stochastic_gradient_descent(X_tr_mini_batch, y_tr,w, b, l_reg = 0.05,batch_size = 200, learning_rate = 0.9, epoch = 300)
 case3 = Cross_entropy_loss(m3,X_val, y_val, alpha = 0.7)
 print(case3)
-
-
-# In[ ]:
 
 
 m4 = stochastic_gradient_descent(X_tr_mini_batch, y_tr,w, b, l_reg = 0.08,batch_size = 150, learning_rate = 0.08, epoch = 250)
