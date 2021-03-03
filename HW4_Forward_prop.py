@@ -1,45 +1,5 @@
 import numpy as np
 
-X_tr = np.transpose(np.load('Training_data_randomized.npy'))
-Y_tr = np.load('Training_labels_randomized.npy')
-
-X_tr = X_tr[:, 1:100]
-Y_tr = Y_tr[1:100, :]
-
-x_shape = np.shape(X_tr)
-y_shape = np.shape(Y_tr)
-m = x_shape[0]
-c = y_shape[1]
-print('Sample of training labels: ', Y_tr[30:35, :])
-
-def list_of_nodes_per_layer(NUM_LAYERS, NO_OF_WEIGHTS, NO_OF_CLASSES):
-    l=[]
-    seed_layer = (NUM_LAYERS-2) * 20
-    l.append(NO_OF_WEIGHTS)
-    l.append(seed_layer)
-    for i in range(2, NUM_LAYERS-1):
-        l.append(l[i-1] - 20)
-
-    l.append(NO_OF_CLASSES)
-    return l
-
-def init_wts_biases(NODES_PER_LAYER):
-    WT_VARS_LIST = {}
-    BIAS_VARS_LIST = {}
-
-    for i in range(0, len(NODES_PER_LAYER)-1):
-        np.random.seed(42)
-        WT_VARS_LIST['W'+str(i+1)] = np.random.normal(0.5, 0.5, [NODES_PER_LAYER[i+1],NODES_PER_LAYER[i]])  #Drawing from gaussian distribution within [0,1]
-        BIAS_VARS_LIST['b'+str(i+1)] = np.random.randn(NODES_PER_LAYER[i+1],1)
-
-    return WT_VARS_LIST, BIAS_VARS_LIST
-
-def relu_function(z):
-    z_shape = np.shape(z)
-    h = np.empty(z_shape)
-    for i in range(0, z_shape[0]-1):
-import numpy as np
-
 def one_hot_encoding(Y, NO_OF_CLASSES):
     Y_ENCODED = np.zeros([NO_OF_CLASSES, np.size(Y)])
     print(np.shape(Y_ENCODED))
