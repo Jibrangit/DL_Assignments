@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
 
 
 def backpropogation(Y_tr,Y_HAT,NUM_LAYERS,WEIGHTS,LAMBDA):
@@ -29,10 +28,6 @@ def backpropogation(Y_tr,Y_HAT,NUM_LAYERS,WEIGHTS,LAMBDA):
     return GDw, GDb
     
 
-
-# In[ ]:
-
-
 def stochastic_gradient_descent(WEIGHTS, BIASES, GDb, GDw,learning_rate,NUM_LAYERS):
     
     for i in range (1, NUM_LAYERS):
@@ -40,9 +35,6 @@ def stochastic_gradient_descent(WEIGHTS, BIASES, GDb, GDw,learning_rate,NUM_LAYE
         BIASES['b' + str(i)] = BIASES['b' + str(i)] - learning_rate*GDb['GDb' + str(k)]
         
     return WEIGHTS, BIASES
-
-
-# In[ ]:
 
 
 def ff_bp_nn(X_tr, Y_tr, layers_dims, epoch =250, batch_size = 50, W, b):
