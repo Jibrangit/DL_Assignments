@@ -81,7 +81,7 @@ def forward_propagation(WEIGHTS, BIASES, X_TRAINING, Y_TRAINING, NO_OF_HIDDEN_LA
     Y_HAT = softmax_function(Z['z' + str(NO_OF_HIDDEN_LAYERS + 1)])
     print('Z before preprocessing it for softmax(original z): ', Z['z' + str(NO_OF_HIDDEN_LAYERS + 1)])
 
-    Normal_loss = (-1/NO_OF_EXAMPLES) * (np.sum(np.multiply(Y_TRAINING, np.log(Y_HAT +0.000000001))))  #*(-1/NO_OF_EXAMPLES)
+    Normal_loss = (-1/NO_OF_EXAMPLES) * (np.sum(np.multiply(Y_TRAINING, np.log(Y_HAT))))  #*(-1/NO_OF_EXAMPLES)
     # print(np.shape(Normal_loss))
     Loss = Normal_loss + regularization_loss(LAMBDA, WEIGHTS, NO_OF_EXAMPLES)
 
@@ -207,3 +207,4 @@ if __name__ == '__main__':
     print('Loss: ', LOSS)
 
     print(backward_propagation(Y_HAT, Y_tr, INITIAL_WTS, INITIAL_BIASES, H, NUM_LAYERS, 0.1))
+
