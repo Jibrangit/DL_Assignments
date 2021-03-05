@@ -167,6 +167,49 @@ c = y_shape[0]
 print('Weight vector size and number of classes:', m, c, '\n')
 # print('Sample of training labels: ', Y_tr[30:35, :])
 
+
+def stochastic_gradient_descent(WEIGHTS, BIASES, dJ_dW, dJ_db, learning_rate, NUM_LAYERS):
+    
+    for i in range (1, NUM_LAYERS):
+        WEIGHTS['W' + str(i)] = WEIGHTS['W' + str(i)] - learning_rate*dJ_dW['dJ_dW' + str(i)]
+        BIASES['b' + str(i)] = BIASES['b' + str(i)] - learning_rate*dJ_db['dJ_db' + str(i)]
+        
+    return WEIGHTS, BIASES
+
+
+def ff_bp_nn(X_training_validation, Y_training_validation,WEIGHTS, BIASES, dJ_dW, dJ_db, epoch =250, batch_size = 50,NO_OF_HIDDEN_LAYERS = 6):
+    np.random.seed(1)
+    #costs = []                        
+    
+    n = X_tr.shape[0]
+    rounds = int (n/batch_size)
+    e = 1
+    r = 1
+
+# random shuffling of both arrays
+    randomize = np.arange(len(X_tr))
+    np.random.shuffle(randomize)
+    Xtr = X_training_validation[randomize]
+    Ytr = Y_training_validation[randomize]
+    
+    
+    for e in range(epoch): 
+        for r in range(rounds):
+            # Forward propagation
+            Y_HAT = forward_propagation(WEIGHTS, BIASES, X_training_validation, Y_training_validation, NO_OF_HIDDEN_LAYERS, LAMBDA = 0.004)
+            print('yhat for SGD:', np.shape(Y_HAT))
+            # Backward propagation.
+            GDw, GDb = backward_propagation(Y_HAT, Y_training_validation, WEIGHTS, BIASES, H, NUM_LAYERS, LAMBDA = 0.004)
+        
+            # Update WTS_BIASES.
+            WEIGHTS, BIASES = stochastic_gradient_descent(WEIGHTS, BIASES, dJ_dW, dJ_db, NUM_LAYERS, learning_rate = 0.01)
+            
+    # Final_Loss
+    fce_Loss = forward_propagation(WEIGHTS, BIASES, X_training_validation, Y_training_validation, NUM_HIDDEN_LAYERS, 0.6)
+    print(fce_Loss)
+    
+    return fce_Loss
+
 if __name__ == '__main__':
 
     NUM_HIDDEN_LAYERS = 6
@@ -207,4 +250,11 @@ if __name__ == '__main__':
     print('Loss: ', LOSS)
 
     print(backward_propagation(Y_HAT, Y_tr, INITIAL_WTS, INITIAL_BIASES, H, NUM_LAYERS, 0.1))
+    
+    dJ_dW, dJ_db = backward_propagation(Y_HAT, Y_tr, INITIAL_WTS, INITIAL_BIASES, H, NUM_LAYERS, 0.1)
+    
+    fce_loss =  ff_bp_nn(X_training_validation, Y_training_validation, INITIAL_WTS, INITIAL_BIASES, dJ_dW, dJ_db, epoch =250, batch_size = 50, NO_OF_HIDDEN_LAYERS = 6)
+    
+    
+    
 
