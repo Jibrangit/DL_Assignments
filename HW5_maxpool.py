@@ -5,6 +5,11 @@ np.random.seed(42)
 W = np.random.randn(3, 3, 1, 64)
 X_tr = np.random.randn(784, 1)
 b1 = np.random.randn(64, 1)
+Weight2 = np.random.randn(10816, 1024)
+bias2 =np.random.randn(1024, 1)
+Weight3 = np.random.randn(1024, 10)
+bias3 =np.random.randn(10, 1)
+
 def conv2D(W, X, b):
     z = np.dot(W, X) +b
     return z
@@ -22,13 +27,23 @@ def maxpool(Z, width, stride):
 
     return Pooled_img
 
+def relu_function(z):
+    h = np.maximum(z, 0)
+    return h
 
+def dense(H, W, b):
+    z = np.dot(np.transpose(W), H) + b
+    return z
+
+def softmax(z):
+  return np.exp(z)/np.sum(np.exp(z), axis = 0, keepdims = True)
 
 Kernels = {}
 Wts_row = {}
 WEIGHTS_CONV2D = {}
 Z_CONV2D = {}
 Z_MAXPOOL = {}
+Z_RELU1={}
 
 # print(W)
 W1 = W[0, 0, 0, :]
@@ -80,4 +95,21 @@ for i in range(0, 64):
 
 for i in range(0, 64):
     Z_MAXPOOL['z_maxpool'+str(i)] = maxpool(Z_CONV2D['z_conv2d'+str(i)], 2, 2)
+
+
+for i in range(0, 64):
+    Z_RELU1['z_relu_one'+str(i)] = relu_function(Z_MAXPOOL['z_maxpool'+str(i)])
+
+# print(np.shape(Z_RELU1['z_relu_one'+str(0)]))
+
+Z_FLATTENED = np.ndarray.flatten(Z_RELU1['z_relu_one'+str(0)])
+for i in range(1, 64):
+    Z_FLATTENED = np.concatenate([Z_FLATTENED, np.ndarray.flatten( Z_RELU1['z_relu_one'+str(i)])])
+
+# print(np.shape(Z_FLATTENED))
+Z_DENSE1 = dense(Z_FLATTENED, Weight2, bias2)
+Z_RELU2 = relu_function(Z_DENSE1)
+Z_DENSE2 = dense(Z_RELU2, Weight3, bias3)
+SOFTMAX = softmax(Z_DENSE2)
+
 
